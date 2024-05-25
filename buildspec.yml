@@ -3,9 +3,11 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - aws --version  # This line checks the AWS CLI version
+      - if [ $(echo $?) -eq 0 ]; then echo "AWS CLI v2 detected. Skipping upgrade"; else echo "AWS CLI v1 detected or not found. Consider upgrading to v2 for compatibility."; fi  # Conditional check and message
       - echo Logging in to Amazon ECR...
-      - aws sts get-caller-identity # To verify IAM role (Optional)
       - aws ecr public login --region ap-south-1
+      # ... rest of your pre-build commands ...
   build:
     commands:
       - echo Build started on `date`
